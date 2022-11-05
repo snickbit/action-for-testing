@@ -43,5 +43,5 @@ runs:
   using: composite
   steps:
     - name: Run script
-      run: ${{ github.action_path }}/src/main.sh "${{ toJSON(inputs) }}
+      run: ${{ github.action_path }}/src/main.sh '${{ toJSON(inputs) }}'
       shell: bash
