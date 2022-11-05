@@ -1,0 +1,47 @@
+name: Release Please
+description: "Release please workflow with npm, git, pnpm, and pre-release scripts"
+inputs:
+  NPM_TOKEN:
+    description: NPM Token
+    required: false
+  GITHUB_TOKEN:
+    description: GitHub Personal Access Token
+    required: false
+  NPM_REGISTRY:
+    description: "NPM Registry (default: '//registry.npmjs.org/')"
+    required: false
+  PUBLISH_SCRIPT:
+    description: "Run an npm script instead of the default publish command: `pnpm publish --ignore-scripts`"
+    required: false
+  PRERELEASE_SCRIPTS:
+    description: "package.json scripts to run before release. (default: 'build,lint,test,docs')"
+    required: false
+  NO_BAIL:
+    description: "Don't bail on prerelease script failures [true/false] (default: false)"
+    required: false
+  BAIL_ON_MISSING:
+    description: "Bail on missing prerelease script [true/false] (default: false)"
+    required: false
+  DRY_RUN:
+    description: "Commands will be printed instead of executed. [true/false/publish-only] (default: false).
+      If 'publish-only' is specified, all commands will run normally except for the 'publish' command, which will be run with the `--dry-run` flag."
+    required: false
+  DEBUG:
+    description: "Prints debug information. [true/false] (default: false)"
+    required: false
+  CONFIG_ONLY:
+    description: "Only verify configuration. [true/false] (default: false)"
+    required: false
+  PRERELEASE_ONLY:
+    description: "ONLY run prerelease scripts. [true/false] (default: false)"
+    required: false
+outputs:
+  releases_created:
+    description: Whether a release was created
+    value: ${{ steps.release.outputs.releases_created }}
+runs:
+  using: composite
+  steps:
+    - name: Run script
+      run: ${{ github.action_path }}/src/main.sh "${{ toJSON(inputs) }}
+      shell: bash
